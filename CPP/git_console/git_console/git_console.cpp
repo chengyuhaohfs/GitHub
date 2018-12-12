@@ -8,11 +8,36 @@ using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	short s_array[] = {1, 2, 3};
-	MY_VECTOR(short, s_array, mVector);
+	CTestTools mTools;
+	CString csCurDir = mTools.GetCurDir();
+	CString csInput = csCurDir + "Input.txt";
 
-	vector<short> v_short = mVector.GetVector();
+	CString csInfo = "";
+	mTools.GetFileContent(csInput, csInfo);
+	// It is included as "vi" with most UNIX systems and with Apple OS X.
+	// CRC32  for data:              1609F8C0
+	// cout << csInfo << endl;
 
-	return 0;
+	CStringArray ca_finds;
+	string strInfo = csInfo.GetBuffer(csInfo.GetLength());
+	csInfo.ReleaseBuffer();
+	// string strRegex = "(It).*(UNIX).*(X\\.)";
+	string strRegex = "CRC32\\s+for\\s+data:\\s+(\\w+)";
+
+	ca_finds.RemoveAll();
+	BOOL bMatched = mTools.PickStringWithRegex(csInfo, ca_finds, strRegex);
+	if (!bMatched)
+	{
+		cout << "Find nothing!\n";
+
+		return H_FAIL;
+	}
+
+	for (int index = 0; index < ca_finds.GetSize(); index++)
+	{
+		cout << ca_finds.GetAt(index) << endl;
+	}
+
+	return H_PASS;
 }
 

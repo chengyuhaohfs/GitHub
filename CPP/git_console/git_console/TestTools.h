@@ -12,6 +12,8 @@ public:
 	CTestTools(void);
 	~CTestTools(void);
 	CString GetCurDir();
+	void GetFileContent(CString csFile, CString &csContent);
+	BOOL PickStringWithRegex(CString cstrRev, CStringArray &ca_finds, std::string strRegex);
 };
 
 template<class T>

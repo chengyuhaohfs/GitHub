@@ -11,9 +11,16 @@
 #include <tchar.h>
 #include <iostream>
 #include <afxwin.h>
+#include <regex>
 #include <vector>
 #include <algorithm>
 
 
+/************************************************************************/
+/* macro definition */
+#define H_PASS 0
+#define H_FAIL 1
+#define H_NONE 2
+/************************************************************************/
 
 // TODO: 在此处引用程序需要的其他头文件
