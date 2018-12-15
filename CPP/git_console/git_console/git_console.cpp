@@ -14,9 +14,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	CString csInfo = "";
 	mTools.GetFileContent(csInput, csInfo);
-	// It is included as "vi" with most UNIX systems and with Apple OS X.
-	// CRC32  for data:              1609F8C0
-	// cout << csInfo << endl;
 
 	CStringArray ca_finds;
 	string strInfo = csInfo.GetBuffer(csInfo.GetLength());
@@ -37,6 +34,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		cout << ca_finds.GetAt(index) << endl;
 	}
+
+	char chstr[] = "I'm from china, my name is hufusheng";
+	char *chptr = chstr;
+	CAutopara<char> mParam(100);
+	mParam.Copy(chptr, strlen(chptr));
+
+	cout << mParam.m_pVal << endl;
 
 	return H_PASS;
 }
