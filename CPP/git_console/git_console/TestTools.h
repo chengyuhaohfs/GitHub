@@ -5,17 +5,6 @@
 /* ∫Í∂®“Â */
 #define MY_VECTOR(data_type, data_array, mvector_name) CMVector<data_type> mvector_name(data_array, sizeof(data_array) / sizeof(data_type))
 /************************************************************************/
-
-class CTestTools
-{
-public:
-	CTestTools(void);
-	~CTestTools(void);
-	CString GetCurDir();
-	void GetFileContent(CString csFile, CString &csContent);
-	BOOL PickStringWithRegex(CString cstrRev, CStringArray &ca_finds, std::string strRegex);
-};
-
 template<class T>
 class CMVector
 {
@@ -103,4 +92,15 @@ private:
 	{
 		// not accepted using
 	}
+};
+
+
+class CTestTools
+{
+public:
+	CTestTools(void);
+	~CTestTools(void);
+	CString GetCurDir();
+	void GetFileContent(CString csFile, CString &csContent);
+	BOOL PickStringWithRegex(CString cstrRev, CStringArray &ca_finds, std::string strRegex);
 };

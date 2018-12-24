@@ -6,6 +6,9 @@
 
 using namespace std;
 
+#define MY_MSG 1001
+DWORD threadFunc(LPVOID lpParam);
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	CTestTools mTools;
@@ -15,33 +18,30 @@ int _tmain(int argc, _TCHAR* argv[])
 	CString csInfo = "";
 	mTools.GetFileContent(csInput, csInfo);
 
-	CStringArray ca_finds;
-	string strInfo = csInfo.GetBuffer(csInfo.GetLength());
-	csInfo.ReleaseBuffer();
-	// string strRegex = "(It).*(UNIX).*(X\\.)";
-	string strRegex = "CRC32\\s+for\\s+data:\\s+(\\w+)";
-
-	ca_finds.RemoveAll();
-	BOOL bMatched = mTools.PickStringWithRegex(csInfo, ca_finds, strRegex);
-	if (!bMatched)
-	{
-		cout << "Find nothing!\n";
-
-		return H_FAIL;
-	}
-
-	for (int index = 0; index < ca_finds.GetSize(); index++)
-	{
-		cout << ca_finds.GetAt(index) << endl;
-	}
-
-	char chstr[] = "I'm from china, my name is hufusheng";
-	char *chptr = chstr;
-	CAutopara<char> mParam(100);
-	mParam.Copy(chptr, strlen(chptr));
-
-	cout << mParam.m_pVal << endl;
+	
 
 	return H_PASS;
+}
+
+DWORD threadFunc(LPVOID lpParam)
+{
+	MSG m_msg;
+	ZeroMemory(&m_msg, sizeof(m_msg));
+	while (1)
+	{
+		if (PeekMessage(&m_msg, (HWND)-1, 0, 0, PM_NOREMOVE))
+		{
+			CString csMsg = "";
+			csMsg.Format("I get a message %d, %d, %d.", m_msg.message, m_msg.lParam, m_msg.wParam);
+			if (IDCANCEL == AfxMessageBox(csMsg, MB_OKCANCEL))
+			{
+				break;
+			}
+		}
+
+		Sleep(100);
+	}
+
+	return 0;
 }
 
