@@ -93,3 +93,80 @@ BOOL CTestTools::PickStringWithRegex(CString cstrRev, CStringArray &ca_finds, st
 
 	return TRUE;
 }
+
+void CTestTools::SplitCommentToLine(CString cstrRev, CStringArray &ca_lines)
+{
+	int iStart = 0;
+	for (int index = 0; index < cstrRev.GetLength(); index++)
+	{
+		if (cstrRev.GetAt(index) == '\n' || cstrRev.GetAt(index) == '\r')
+		{
+			while (cstrRev.GetAt(index) == '\n' || cstrRev.GetAt(index) == '\r')
+			{
+				index++;
+			}
+			CString cstr = cstrRev.Mid(iStart, index - iStart);
+			iStart = index;
+			ca_lines.Add(cstr);
+		}
+	}
+}
+
+
+void CTestTools::GroupByRegex(CStringArray &ca_lines, std::vector<std::string> parttens)
+{
+	std::string strCurGroup = "";
+	std::string strCurRegex = "";
+	std::map<std::string, std::vector<std::string>> map_finds;
+	for (int index = 0; index < ca_lines.GetSize(); index++)
+	{
+		CString cstr = ca_lines.GetAt(index);
+		if (0 == cstr.Trim().GetLength())
+		{
+			continue;
+		}
+		std::string str = cstr.GetBuffer(cstr.GetLength());
+		cstr.ReleaseBuffer();
+// 		for (auto iter = parttens.begin(); iter != parttens.end(); iter++)
+// 		{
+// 			std::regex partten(*iter);
+// 			std::match_results<std::string::const_iterator> match_values;
+// 			if (std::regex_search(str, match_values, partten))
+// 			{
+// 				strCurRegex = *iter;
+// 				// 如果匹配到则进入循环，直到遇到下一个匹配
+// 
+// 			}
+// 		}
+
+		// 当匹配到第一个正则时写入，到遇到下一个时停止
+		{
+			std::regex partten(parttens[0]);
+			std::match_results<std::string::const_iterator> match_values;
+			if ( std::regex_search(str, match_values, partten) )
+			{
+				strCurGroup = str;
+				continue;
+			}
+
+			if (strCurGroup.length() != 0 && 0 != str.length())
+			{
+				map_finds[strCurGroup].push_back(str);
+			}
+		}
+
+// 		if (0 != str.length() && 0 != strCurRegex.length())
+// 		{
+// 			map_finds[strCurRegex].push_back(str);
+// 		}
+	}
+
+	for (auto iter = map_finds.begin(); iter != map_finds.end(); iter++)
+	{
+		cout << iter->first << ":\n";
+		for (auto subiter = iter->second.begin(); subiter != iter->second.end(); subiter++)
+		{
+			cout << *subiter << endl;
+		}
+	}
+}

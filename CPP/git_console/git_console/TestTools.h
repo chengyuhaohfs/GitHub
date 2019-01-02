@@ -103,4 +103,6 @@ public:
 	CString GetCurDir();
 	void GetFileContent(CString csFile, CString &csContent);
 	BOOL PickStringWithRegex(CString cstrRev, CStringArray &ca_finds, std::string strRegex);
+	void SplitCommentToLine(CString cstrRev, CStringArray &ca_lines);
+	void GroupByRegex(CStringArray &ca_lines, std::vector<std::string> parttens);
 };
