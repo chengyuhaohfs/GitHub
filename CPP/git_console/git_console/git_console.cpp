@@ -23,6 +23,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	// ostream_iterator<T> 可以写入类型为 T 的值
 	*oo = "hello world";
 	// 向控制台输出 hello world
+	cout << "how are you" << endl;
 
 	return H_PASS;
 }
